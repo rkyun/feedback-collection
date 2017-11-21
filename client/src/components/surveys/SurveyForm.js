@@ -6,6 +6,8 @@ import { reduxForm, Field } from 'redux-form';
 
 import SurveyField from './SurveyField';
 
+import validateEmails from '../../utils/validateEmails';
+
 
 
 
@@ -49,6 +51,23 @@ class SurveyForm extends Component {
   }
 }
 
+function validate(values){
+  const errors = {};
+
+  errors.emails = validateEmails(values.emails || '');  
+
+  FIELDS.forEach(({name})=>{
+    if (!values[name]) {
+      errors[name] = `You must provide a value`;
+    }
+  })
+
+  
+  
+  return errors;
+}
+
 export default reduxForm({
+  validate,
   form: 'surveyForm'
 })(SurveyForm)
